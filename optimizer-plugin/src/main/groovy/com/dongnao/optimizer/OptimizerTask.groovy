@@ -23,8 +23,6 @@ class OptimizerTask extends DefaultTask {
     @Input
     int apiLevel
 
-    @Input
-    int quality
 
 
     def webpTool
@@ -115,7 +113,7 @@ class OptimizerTask extends DefaultTask {
         //转换wenp
         String name = file.name
         name = name.substring(0, name.lastIndexOf("."))
-        def result = "$tool -q $quality ${file.absolutePath} -o ${file.parent}/${name}.webp"
+        def result = "$tool -q 75 ${file.absolutePath} -o ${file.parent}/${name}.webp"
                 .execute()
         result.waitForProcessOutput()
         if (result.exitValue() == 0) {
@@ -137,7 +135,7 @@ class OptimizerTask extends DefaultTask {
                     result = "$tool -brute -rem alla -reduce -q ${file.absolutePath}  ${output.absolutePath}"
                             .execute()
                 else
-                    result = "$tool --quality $quality ${file.absolutePath}  ${output.absolutePath}"
+                    result = "$tool --quality 84 ${file.absolutePath}  ${output.absolutePath}"
                             .execute()
                 result.waitForProcessOutput()
                 if (result.exitValue() == 0) {

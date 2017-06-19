@@ -14,6 +14,7 @@ class OptimizerUtils {
     def static final PNG9 = ".9.png"
     def static final PNG = ".png"
     def static final JPG = ".jpg"
+    def static final JPEG = ".jpeg"
 
 
     def static isImgFolder(File file) {
@@ -21,11 +22,11 @@ class OptimizerUtils {
     }
 
     def static isPreOptimizePng(File file) {
-        return file.name.endsWith(PNG) && !file.name.endsWith(PNG9)
+        return (file.name.endsWith(PNG) || file.name.endsWith(PNG.toUpperCase())) && !file.name.endsWith(PNG9) && !file.name.endsWith(PNG9.toUpperCase())
     }
 
     def static isPreOptimizeJpg(File file) {
-        return file.name.endsWith(JPG)
+        return file.name.endsWith(JPG) || file.name.endsWith(JPEG) || file.name.endsWith(JPG.toUpperCase()) || file.name.endsWith(JPEG.toUpperCase())
     }
 
 
@@ -45,7 +46,6 @@ class OptimizerUtils {
             toolName = "${name}_linux"
         }
         def path = "${project.buildDir.absolutePath}/tools/$name/$toolName"
-        println path
         def file = new File(path)
         if (!file.exists()) {
             file.parentFile.mkdirs()

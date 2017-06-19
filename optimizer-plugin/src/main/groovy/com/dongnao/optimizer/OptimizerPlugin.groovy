@@ -12,14 +12,12 @@ class OptimizerPlugin implements Plugin<Project> {
         //println it.apkVariantData.variantConfiguration.minSdkVersion.apiLevel
         //println it.mergeResources.minSdk
         //println it.mergedFlavor.minSdkVersion.apiLevel
-        def optimizer = project.extensions.create("optimizer", OptimizerExtensions)
         project.afterEvaluate {
             project.android.applicationVariants.all {
                 BaseVariant variant ->
                     def task = project.tasks.create("optimize${variant.name.capitalize()}", OptimizerTask) {
                         //最好是获得处理之后的 确定了的manifest文件
                         manifestFile = variant.outputs.first().processManifest.manifestOutputFile
-                        quality = optimizer.quality
                         res = variant.mergeResources.outputDir
                         apiLevel = variant.mergeResources.minSdk
                     }
