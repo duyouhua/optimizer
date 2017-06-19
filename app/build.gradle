@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.dongnao.optimizer:plugin:1.0'
+    }
+}
+
+apply plugin: 'com.dongnao.optimizer'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.dongnao.optimizer"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        haha {
+            minSdkVersion 15
+        }
+        aaa {
+            minSdkVersion 15
+        }
+        nono {
+
+        }
+    }
+
+    applicationVariants.all {
+//        println it.name.capitalize()
+//        println project.tasks.getByName("processAaaDebugResources").class
+//        println it.mergeResources.name
+//        println it.apkVariantData.variantConfiguration.minSdkVersion.apiLevel
+//        println it.mergeResources.minSdk
+//        println it.mergedFlavor.minSdkVersion.apiLevel
+//        println it.mergeResources.outputDir
+//        println  it.outputs.first().processResources
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+}
+
+

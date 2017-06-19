@@ -1,0 +1,90 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile localGroovy()
+    compile gradleApi()
+    compile 'com.android.tools.build:gradle:2.3.1'
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+
+
+
+apply plugin: 'maven-publish'
+//前往jcenter 注册登陆
+//添加一个新的仓库 name:gradle-plugin
+//类型选择maven，选择软件许可 ,可以输入描述 下一步
+//新建一个包
+//name:Protobuf,描述、标签、开发期、填入地址等
+//刚上传上去还无法使用 需要add to jcenter
+//不过我们可以通过 jcenter网站中仓库右上角看到 https://dl.bintray.com/lance2017/gradle-plugin/
+//我们可以指定到这个地址 maven { url "https://dl.bintray.com/lance2017/gradle-plugin/" } 来使用
+ext {
+//    url "$bintrayBaseUrl/$bintrayUsername/$bintrayRepository/$bintrayPackage"
+    //api地址
+    bintrayBaseUrl = 'https://api.bintray.com/maven'
+    //用户名
+    bintrayUsername = 'lance2017'
+    //apikey
+    bintrayPassword = '6179fa4efe168d675191a166d19785ea5f9bbc03'
+    //创建的仓库名
+    bintrayRepository = 'gradle-plugin'
+    //创建的包名
+    bintrayPackage = 'optimizer'
+}
+
+publishing {
+    publications {
+        //定义发布到Maven，这个类型会为我们创建
+        // 生成pom    这个配置增加的
+        //publish : 发布项目中所有的包
+        //publishPluginPublicationToMavenLocal ： 这个配置增加的，只发布软件组件到本地
+        //publishToMavenLocal ： 发布指定包到本地
+        plugin(MavenPublication) {
+            from components.java    //添加jar组件到发布列表
+            groupId = 'com.dongnao.optimizer'
+            artifactId = 'plugin'
+            version = '1.0'
+
+            //仓库中的pom应该包含更多信息,比如作用、软件许可证和文档链接等等
+            pom.withXml {
+                //这个方法编译根结点 以用与添加或者修改节点
+                //group、artifactId和version不能修改
+                def root = asNode()
+                //增加新节点
+                //http://maven.apache.org/pom.html
+                root.appendNode('name','Optimizer Plugin')
+                root.appendNode('description','Optimizer Plugin for optimize apk drawable and mipmap')
+                //增加软件许可证
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name','Apache License, Version 2.0')
+                license.appendNode('url','www.apache.org/licenses/LICENSE-2.0.txt')
+                license.appendNode('distribution','repo')
+                license.appendNode('comments','A business-friendly OSS license')
+                //添加开发信息
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id','Lance')
+                developer.appendNode('name','Lance')
+                developer.appendNode('organization','dongnao')
+            }
+        }
+    }
+    //增加一个发布仓库
+    repositories {
+        maven {
+            //(任务)名字
+            name 'jcenter'
+            //上传地址
+            url "$bintrayBaseUrl/$bintrayUsername/$bintrayRepository/$bintrayPackage"
+            //上传的身份验证信息
+            credentials {
+                username = bintrayUsername
+                password = bintrayPassword
+            }
+        }
+    }
+}
