@@ -25,6 +25,7 @@ class OptimizerPlugin implements Plugin<Project> {
                     }
                     //将android插件的处理资源任务依赖于自定义任务
                     variant.outputs.first().processResources.dependsOn task
+                    task.dependsOn variant.outputs.first().processManifest
             }
         }
 

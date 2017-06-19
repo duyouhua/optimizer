@@ -55,7 +55,7 @@ class OptimizerTask extends DefaultTask {
         launcher = launcher.substring(launcher.lastIndexOf("/") + 1, launcher.length())
         round_launcher = round_launcher.substring(round_launcher.lastIndexOf("/") + 1, round_launcher.length())
         println("find app launcher icon  :$launcher")
-        println("find app round launcher icon  :$launcher")
+        println("find app round launcher icon  :$round_launcher")
         def pngs = []
         def jpgs = []
         res.eachDir { dir ->
@@ -73,7 +73,7 @@ class OptimizerTask extends DefaultTask {
         //Google Play does not support other file formats, like JPEG or WebP, for app launcher icons.
 
         println("current apiLevel is $apiLevel")
-        if (apiLevel >= 14) {
+        if (apiLevel >= 14 && apiLevel < 18) {
             //能够使用非透明webp
             def compress = []
             pngs.each {
